@@ -1,0 +1,15 @@
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Archives
+*.zip
+*.7z
+*.rar
+
+# Logs
+*.log
+
+# Editor
+.vscode/
+.idea/

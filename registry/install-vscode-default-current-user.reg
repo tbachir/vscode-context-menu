@@ -1,0 +1,25 @@
+Windows Registry Editor Version 5.00
+
+; Minimal fallback only.
+; Prefer scripts\Install-DevContextMenu.ps1 because it detects Code.exe properly.
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.VSCode]
+@="Open folder in VS Code"
+"Icon"="%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe,0"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.VSCode\command]
+@="\"%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.VSCode]
+@="Open folder in VS Code"
+"Icon"="%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe,0"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.VSCode\command]
+@="\"%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe\" \"%V\""
+
+[HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.VSCode]
+@="Open drive in VS Code"
+"Icon"="%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe,0"
+
+[HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.VSCode\command]
+@="\"%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe\" \"%1\""

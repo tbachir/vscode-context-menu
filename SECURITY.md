@@ -1,27 +1,22 @@
 # Security Policy
 
-## Supported usage
+## Supported versions
 
-This project is a small Windows registry helper for Visual Studio Code context-menu entries.
+Only the latest release is supported.
 
-Supported target:
+## Reporting a vulnerability
 
-- Windows 10 and Windows 11
-- Current-user registry installation
-- Visual Studio Code installed locally
+Please open a GitHub security advisory or a private issue if the repository host supports it.
 
-## Reporting a security issue
+## Scope
 
-Please open a private security advisory on GitHub if the repository is hosted there, or contact the maintainer through the repository profile.
+This project writes per-user Windows registry entries and local support wrapper files. It should not request administrator rights, download remote code, or modify system-wide registry hives.
 
-Do not publish exploit details in a public issue before the issue has been reviewed.
+## Safe usage checklist
 
-## Design constraints
+Before running the installer:
 
-The project intentionally avoids:
-
-- remote downloads during installation
-- telemetry
-- background services
-- bundled binaries
-- administrator requirements for the default install path
+1. Inspect `scripts/Install-DevContextMenu.ps1`.
+2. Confirm it writes to `HKEY_CURRENT_USER\Software\Classes`.
+3. Confirm it does not download or execute remote content.
+4. Run the uninstall script if you want to remove all entries.

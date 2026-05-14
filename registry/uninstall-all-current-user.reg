@@ -1,0 +1,21 @@
+Windows Registry Editor Version 5.00
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.VSCode]
+[-HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.VSCode]
+[-HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.VSCode]
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.WindowsTerminal]
+[-HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.WindowsTerminal]
+[-HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.WindowsTerminal]
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.WindowsPowerShell]
+[-HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.WindowsPowerShell]
+[-HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.WindowsPowerShell]
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.PowerShell7]
+[-HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.PowerShell7]
+[-HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.PowerShell7]
+
+[-HKEY_CURRENT_USER\Software\Classes\Directory\shell\WindowsDevContextMenu.CommandPrompt]
+[-HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\WindowsDevContextMenu.CommandPrompt]
+[-HKEY_CURRENT_USER\Software\Classes\Drive\shell\WindowsDevContextMenu.CommandPrompt]

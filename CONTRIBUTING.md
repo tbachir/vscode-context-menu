@@ -1,22 +1,26 @@
 # Contributing
 
-Contributions are welcome if they keep the project small, readable, and safe.
+Contributions are welcome if they keep the project simple, auditable, and reversible.
 
-## Guidelines
+## Principles
 
-- Keep the default installation under `HKEY_CURRENT_USER`.
-- Do not introduce remote downloads in install scripts.
-- Do not bundle third-party binaries.
-- Keep scripts readable and auditable.
-- Include an uninstall path for any new registry keys.
+- Prefer per-user registry keys over machine-wide writes.
+- Do not require administrator rights unless there is a clear reason.
+- Do not hardcode personal paths.
+- Keep install and uninstall paths symmetrical.
+- Avoid compiled binaries.
+- Make changes inspectable by non-experts.
 
-## Local validation
+## Local checks
 
-From PowerShell:
+On Windows, run:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\install.ps1 -WhatIf
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\uninstall.ps1 -WhatIf
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\Test-Scripts.ps1
 ```
 
-For a disposable test environment, run the installer and then the uninstaller.
+If PowerShell 7 is available, also run:
+
+```powershell
+pwsh.exe -NoProfile -File .\tests\Test-Scripts.ps1
+```

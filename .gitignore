@@ -1,15 +1,6 @@
-# Windows
+.DS_Store
 Thumbs.db
-Desktop.ini
-
-# Archives
-*.zip
-*.7z
-*.rar
-
-# Logs
 *.log
-
-# Editor
+*.tmp
 .vscode/
 .idea/

@@ -1,122 +1,129 @@
-# VS Code Context Menu for Windows
+# Windows Dev Context Menu
 
-Add a clean **Open with VS Code** entry to the Windows File Explorer context menu.
+Add useful developer actions to the Windows File Explorer context menu, per user and without requiring administrator rights.
 
-This repository provides a small, transparent, user-scoped setup for opening folders directly in Visual Studio Code from File Explorer.
+It can add entries for:
 
-## What it adds
+- Open folder in Visual Studio Code
+- Open folder in Windows Terminal
+- Open Windows PowerShell here
+- Open PowerShell 7 here, when `pwsh.exe` is installed
+- Open Command Prompt here
 
-- Right-click **on a folder** → `Open with VS Code`
-- Right-click **inside a folder background** → `Open with VS Code`
-- Right-click **on a drive** → `Open with VS Code`
-- Installs under `HKEY_CURRENT_USER`, so administrator rights are not required
-- Includes uninstall scripts and registry removal files
+The installer writes to `HKEY_CURRENT_USER\Software\Classes`, so it only affects the current Windows user.
 
-On Windows 11, this entry may appear under **Show more options** depending on the system context-menu behavior.
+## Why this exists
 
-## Recommended install
+Windows context menu entries are often missing, duplicated, machine-specific, or tied to hardcoded paths. This project provides a clean, inspectable, reversible setup that works better for public reuse than a personal `.reg` file.
 
-Download or clone the repository, then run PowerShell from the project folder:
+## Quick install
 
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\install.ps1
-```
-
-The installer auto-detects VS Code from common locations:
-
-- User install: `%LOCALAPPDATA%\Programs\Microsoft VS Code\Code.exe`
-- System install: `%ProgramFiles%\Microsoft VS Code\Code.exe`
-- 32-bit system install: `%ProgramFiles(x86)%\Microsoft VS Code\Code.exe`
-- `code` / `code.cmd` if available in `PATH`
-
-You can also provide the path manually:
+Download the repository, extract it, then run:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\install.ps1 -CodePath "C:\Path\To\Code.exe"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Install-DevContextMenu.ps1
 ```
 
-## Direct `.reg` install
-
-For a default per-user VS Code installation, you can import:
+Or double-click:
 
 ```text
-registry\install-current-user-default-vscode.reg
+install.cmd
 ```
 
-This registry file is anonymous and uses `%LOCALAPPDATA%` rather than a hard-coded username. The PowerShell installer remains the safest option because it writes the exact detected path.
+By default, the installer proposes an interactive setup and detects the installed tools automatically.
+
+## Recommended non-interactive install
+
+Install VS Code, Windows Terminal, and Windows PowerShell entries:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Install-DevContextMenu.ps1 -Components VSCode,WindowsTerminal,WindowsPowerShell -NonInteractive
+```
+
+Install every supported component that can be detected:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Install-DevContextMenu.ps1 -Components All -NonInteractive
+```
 
 ## Uninstall
 
-Recommended:
-
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\uninstall.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Uninstall-DevContextMenu.ps1
 ```
 
-Or import:
+Or double-click:
 
 ```text
-registry\uninstall-current-user.reg
+uninstall.cmd
 ```
 
-## Batch shortcuts
+## What gets changed
 
-For convenience, double-clickable wrappers are also included:
+Registry keys are created below:
 
-- `install-current-user.cmd`
-- `uninstall-current-user.cmd`
+```text
+HKEY_CURRENT_USER\Software\Classes\Directory\shell\...
+HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\...
+HKEY_CURRENT_USER\Software\Classes\Drive\shell\...
+```
 
-If Windows blocks downloaded scripts, right-click the file, open **Properties**, then choose **Unblock**.
+Support wrapper files are installed below:
+
+```text
+%LOCALAPPDATA%\WindowsDevContextMenu
+```
+
+The wrappers are used for shell commands that need robust path handling, especially PowerShell folders containing spaces, quotes, apostrophes, accented characters, or other special characters.
+
+## Windows 11 note
+
+Classic registry-based shell entries may appear under **Show more options** in the modern Windows 11 context menu depending on your Windows build and Explorer configuration. This project intentionally uses the simple, auditable, per-user registry approach instead of a native shell extension.
+
+## Components
+
+| Component | Entry label | Detection |
+| --- | --- | --- |
+| `VSCode` | Open folder in VS Code | `Code.exe` in user/system install paths or `PATH` |
+| `WindowsTerminal` | Open in Windows Terminal | `wt.exe` |
+| `WindowsPowerShell` | Open Windows PowerShell here | Built-in Windows PowerShell |
+| `PowerShell7` | Open PowerShell 7 here | `pwsh.exe` |
+| `CommandPrompt` | Open Command Prompt here | `%ComSpec%` |
+| `All` | All supported entries | Adds all detected components |
 
 ## Advanced options
 
-Install without the drive context-menu entry:
+```powershell
+.\scripts\Install-DevContextMenu.ps1 -Help
+```
+
+Useful examples:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\install.ps1 -IncludeDrive:$false
+# Install only VS Code and Windows Terminal
+.\scripts\Install-DevContextMenu.ps1 -Components VSCode,WindowsTerminal -NonInteractive
+
+# Use a custom VS Code executable path
+.\scripts\Install-DevContextMenu.ps1 -Components VSCode -VSCodePath "C:\Tools\VSCode\Code.exe" -NonInteractive
+
+# Put entries behind Shift + right-click only
+.\scripts\Install-DevContextMenu.ps1 -Components All -ExtendedOnly -NonInteractive
+
+# Avoid restarting Explorer automatically
+.\scripts\Install-DevContextMenu.ps1 -Components All -SkipExplorerRestart -NonInteractive
 ```
 
-Customize the menu label:
+## Direct `.reg` files
 
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\install.ps1 -Label "Open Folder as VS Code Project"
-```
+The `registry/` directory contains simple `.reg` files for inspection and minimal fallback use.
 
-Install machine-wide instead of current-user only:
-
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass -Force; .\install.ps1 -Scope LocalMachine
-```
-
-Machine-wide installation writes to `HKLM:\Software\Classes` and usually requires an elevated PowerShell session.
-
-## How it works
-
-The installer creates these registry keys:
-
-```text
-HKCU\Software\Classes\Directory\shell\OpenWithVSCode
-HKCU\Software\Classes\Directory\Background\shell\OpenWithVSCode
-HKCU\Software\Classes\Drive\shell\OpenWithVSCode
-```
-
-Each key points to `Code.exe` with `--reuse-window` and passes the selected folder path to VS Code.
-
-## Compatibility
-
-Tested design target:
-
-- Windows 10
-- Windows 11
-- Visual Studio Code user or system installation
-
-This project does not install VS Code. It only adds or removes Explorer context-menu entries.
+For real use, prefer the PowerShell installer because a `.reg` file cannot reliably detect whether VS Code, Windows Terminal, or PowerShell 7 were installed per-user, system-wide, or through a custom path.
 
 ## Security
 
-The scripts only modify Explorer context-menu registry keys under the selected scope. No telemetry, no external downloads, no background services.
+Before running any script from the internet, inspect it. This project is intentionally small and avoids compiled binaries.
 
-Review the files before running them. They are intentionally small and readable.
+The installer does not require administrator rights, does not download dependencies, and only writes per-user registry entries plus local wrapper files.
 
 ## License
 

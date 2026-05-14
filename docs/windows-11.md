@@ -1,13 +1,12 @@
 # Windows 11 context menu behavior
 
-Windows 11 uses a newer compact context menu. Classic registry-based context-menu entries often appear under **Show more options**.
+Windows 11 introduced a modern compact context menu. Classic shell registry entries may appear under **Show more options** instead of the first-level menu.
 
-This project intentionally uses the classic shell registry integration because it is:
+This project uses classic per-user registry entries because they are:
 
-- transparent
-- reversible
-- compatible with Windows 10
-- simple to audit
-- safe to install per user
+- Easy to inspect
+- Easy to uninstall
+- No-admin by default
+- Safer than shipping a native Explorer shell extension
 
-A native top-level Windows 11 menu extension would require a different implementation model and more maintenance complexity.
+A first-level Windows 11 shell extension would require a different architecture and is intentionally outside the scope of this project.
